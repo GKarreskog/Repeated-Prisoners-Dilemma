@@ -1,0 +1,60 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+{% block title %}
+    Instructions
+{% endblock %}
+
+{% block content %}
+<div id="instructions">
+    <p>Thank you for participating in this experiment.</p>
+    <p> Please read the instructions carefully. Before you can start the experiment you must pass a short quiz. You have {{Constants.num_rounds}} tries in total, if you fail them all you will be disqualified from the experiment.</p>
+
+    <p>This experiment is about decision making. You will be randomly matched with other MTurk workes and none of you will know the identity of the other. You begin with {{initial_points}} units, and during the experiment units will be added and subtracted to that amount depending on the choices you and your matched participants make. The conversion rate from units to dollars is {{points_per_dollar}} units per dollar.</p>
+
+    <p>Since this experiment involves multiple participants there will be some waiting involved. You will be compensated for the time spent on waiting pages at an rate of 7$ per hour.</p>
+
+    <h3>The Session</h3>
+    <p>The session is divided into a series of interations between you and one other participant at the time. </p>
+    <p>In each interaction you play a random number of rounds with the same other participant. You will both make one decision per round. Once the interaction ends you will be randomly re-matched with another participant. If you take more than {{wait_to_skip}} seconds to make your decision in a round, we will consider you inactive and you will be removed from the experiment and the other participant will be compensated with {{compensation_units}} units.</p>
+
+    <h3>The round</h3>
+    <p>In each round of the experiment you will choose between options, A and B. If you choose A, you will lose some points and the participant you are currently interacting with will gain some points. If you choose B you will not lose any points, and the participant you are interacting with will not get any points. You will both face the same choice. The exact values of the cost and the benefit will change between the interactions, but remain the same during each interaction. </p>
+
+    <p>For example, if choosing option A will result in you loosing 2 points and the other participant gaining 8 points four things can happen: </p>
+    <ul>
+        <li>If you play A and the other person plays A, you both get +6 points.</li>
+        <li>If you play A and the other person plays B, you would get -2 points and they +8 points.</li>
+        <li>If you play B and the other person plays A, you would get +8 points and they -2 points.</li>
+        <li>If you play B and the other person plays B, you would both get 0 points.</li>
+    </ul>
+
+    <h3>Random number of rounds</h3>
+    You will not now how many rounds a given interaction will last. Instead, for each interaction there is a fixed probability that you play at least on more round. If that probability is e.g. 80%, then there is a 80% probability that you will play at least one more round, and a 20% probability that the current round is the last. This probability will vary between interactions. 
+
+    <h3>A chance that your choice is changed</h3>
+    In each round there is some probability that the choice you make will be changed and the other choice implemented instead. So if that probability is 10% and you choose A, there is a 90% probability that A will be implemented and 10% probability that B will be implemented. The same is true for the other participant's choice. There is no way for you to know if the choice you observe was the inteded choice or not. 
+
+</div>
+
+
+<h2>Quiz</h2>
+<p> Try {{player.round_number}}/{{Constants.num_rounds}} of the quiz.</p>
+
+{% if player.round_number > 1 %}
+<p style="color: red; font-weight:bold;"> At least one of your answers was incorrect, read the instructions and try again. </p>
+{% endif %}
+
+ <!--maybe we can also decrease the number of quiz questions. Is it essential for them to understand the answers for 1 and 2? they will learn them in like 5 rounds max.-->
+
+{% formfield player.q1 label="If choice A gives you -1 point and the other participant +4 points, and you both choose A which gets implemented. What is the payoff you will receive?" %}
+{% formfield player.q2 label="If you both choose B and it gets implemented. What is the payoff you will receive?" %}
+{% formfield player.q3 label="The probability of that the interaction will continue on more round is 75%, what is the probability that the current round is the last?" %}
+{% formfield player.q4 label="If you choose B and there is a 10% probability that your choice is change, what is the probability that A is implemented?" %}
+
+
+
+    <div class="centered">
+        {% next_button %}
+    </div>
+
+{% endblock %}

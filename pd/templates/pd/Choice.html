@@ -1,0 +1,13 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Choice
+{% endblock %}
+
+{% block content %}
+{{player.round_number}}
+    {% formfields %}
+    {% next_button %}
+
+{% endblock %}

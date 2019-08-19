@@ -1,0 +1,14 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Results
+{% endblock %}
+
+{% block content %}
+    Your cummulative payoff from this interaction was {{ cumulative_payoff}} from a total number of {{num_prev}} interactions, yielding a total payoff so far from all interactions of {{ tot_payoff }}. 
+
+    {% next_button %}
+{% endblock %}
+
+
