@@ -1,0 +1,13 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+   The experiment is full.
+{% endblock %}
+
+{% block content %}
+The experiment is unfortuneatly already full. As a thank you for showing interest and completing the quiz you will get a bonus payment of {{bonus}}$. 
+
+{% next_button %}
+
+{% endblock %}

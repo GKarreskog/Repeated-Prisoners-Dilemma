@@ -6,8 +6,46 @@
 {% endblock %}
 
 {% block content %}
-{{player.round_number}}
-    {% formfields %}
-    {% next_button %}
+
+{% if first %}
+<p>You have now been matched with a new participant for a new interaction with new parameters. </p>
+{% endif %}
+
+{% if not first %}
+<p>In the previous round, you took action <strong>{{self_a}}</strong> and the other person took action <strong>{{opp_a}}</strong>, which gave you a payoff of <strong>{{payoff}} </strong>.</p>
+{% endif %}
+
+<p>You currently have a total of <strong>{{tot_payoff}}</strong></p>
+
+<!-- <p>This interaction has the following rules</p> -->
+
+<table class="table table-bordered" style="text-align: center;">
+        <tr>
+                <th></th>
+                <td><strong>You get</strong> </td>
+                <td><strong>They get</strong></td>
+            </tr>
+    <tr>
+        <th><strong>A</strong></th>
+        <td><strong>-{{player.cost}}</strong> </td>
+        <td><strong>{{player.benefit}}</strong></td>
+    </tr>
+    <tr>
+            <th><strong>B</strong></th>
+            <td><strong>0</strong> </td>
+            <td><strong>0</strong></td>
+    </tr>
+</table>
+
+    <p><strong>{{δ}}%</strong> probability that you will play at least one more round in this interaction.</p>
+    <p><strong>{{ε}}%</strong> probability that the action implemented will not be the one you choose.</p>
+</ul>
+
+
+<p style="text-align: center;">Choose between action <strong>A</strong> and <strong>B</strong></p>
+    <div style="text-align: center">
+        <button name="choice" value="True" class="btn btn-primary btn-large">A</button>
+        <button name="choice" value="False" class="btn btn-primary btn-large">B</button>
+    </div>
 
 {% endblock %}

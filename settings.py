@@ -6,14 +6,43 @@ from os import environ
 # e.g. self.session.config['participation_fee']
 
 SESSION_CONFIG_DEFAULTS = {
-    'real_world_currency_per_point': 0.006666666,
+    'real_world_currency_per_point': 0.01,
     'initial_points': 50,
     'participation_fee': 0.25,
     'min_players_start': 4,
     'num_interactions': 4,
-    "wait_to_skip": 60,
+    "wait_to_skip": 30,
+    "timeout":30,
     'compensation_units': 50,
+    'pay_for_waiting': 7/3600,
+    'max_pay_for_waiting': 3.,
+    'REAL_WORLD_CURRENCY_DECIMAL_PLACES': 2,
+    'quiz_bonus': 0.5,
     'doc': "",
+}
+
+mturk_hit_settings = {
+    'keywords': ['bonus', 'study'],
+    'title': 'Multiplayer decision making experiment',
+    'description': 'Earn a bonus ($2-$3 on average) in this 10 to 20 minute experiment.',
+    'frame_height': 700,
+    'preview_template': 'global/MTurkPreview.html',
+    'minutes_allotted_per_assignment': 40,
+    'expiration_hours': 2, 
+    'qualification_requirements': [
+        {
+            'QualificationTypeId': "000000000000000000L0",
+            'Comparator': "GreaterThan",
+            'IntegerValues': [95]
+        },
+        {
+            'QualificationTypeId': "00000000000000000071",
+            'Comparator': "EqualTo",
+            'LocaleValues': [{
+                'Country': "US",
+            }]
+        }
+    ]
 }
 
 SESSION_CONFIGS = [
@@ -21,13 +50,13 @@ SESSION_CONFIGS = [
        'name': 'full',
        'display_name': "Repeated interaction",
        'num_demo_participants': 6,
-       'app_sequence': ['waiting', 'pd'],
+       'app_sequence': ['lobby', 'waiting', 'pd'],
     },
     {
        'name': 'only_games',
        'display_name': "Only Games",
        'num_demo_participants': 6,
-       'min_players_start': 2,
+       'min_players_start': 5,
        'app_sequence': ['waiting', 'pd'],
     }
 ]

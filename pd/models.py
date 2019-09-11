@@ -3,8 +3,8 @@ from otree.api import (
     Currency as c, currency_range
 )
 
-import numpy as np 
-
+import numpy as np
+import random
 
 author = 'Your name here'
 
@@ -16,13 +16,17 @@ Your app description
 class Constants(BaseConstants):
     name_in_url = 'Repeated_interaction'
     players_per_group = 2
-    num_rounds = 10
+    num_rounds = 50
 
 
 class Subsession(BaseSubsession):
     def creating_session(self):
         if self.round_number == 1:
-            δ = 0.2
+            δ_list = [0.5, 0.7, 0.8, 0.9]
+            # ε_list = [0., 0.05, 0.1]
+            ε_list = [0.0, 0.05, 0.1, 0.15]
+            c_list = [1,2,3,4]
+            b_list = [4,5,6,7]
             num_interactions = self.session.config["num_interactions"]
             deltas = []
             epsilons = []
@@ -32,14 +36,18 @@ class Subsession(BaseSubsession):
             round_count = 1
             i = 0
             while i < num_interactions:
-                epsilons.append(0.1)
-                deltas.append(δ)
+                δ = random.choice(δ_list)
+                ε = random.choice(ε_list)
+                benefit = random.choice(b_list)
+                cost = random.choice(c_list)
+
+                epsilons.append(ε)
+                deltas.append(random.choice(δ_list))
                 interaction_changes.append(round_count)
-                benefits.append(4)
-                costs.append(1)
+                benefits.append(benefit)
+                costs.append(cost)
                 round_count += np.random.geometric(1-δ)
                 i += 1
-                # if round_count > Constants.num_rounds:
                 if round_count > Constants.num_rounds:
                     i = 0
                     deltas = []
@@ -50,20 +58,21 @@ class Subsession(BaseSubsession):
                     round_count = 1
             interaction_changes.append(round_count)
 
-            
+
             self.session.vars["deltas"] = deltas
             self.session.vars["interaction_changes"] = interaction_changes
             self.session.vars["epsilons"] = epsilons
             self.session.vars["benefits"] = benefits
             self.session.vars["costs"] = costs
             self.session.vars["n_periods"] = interaction_changes[-1]
-            
+            self.session.vars["someone_has_passed"] = {i:False for i in interaction_changes}
+
 
             # self.session.vars["num_passed"] = [0]*(Constants.num_rounds+2) ## Todo: find right value
 
-            
 
- 
+
+
 
 
 class Group(BaseGroup):
@@ -81,22 +90,28 @@ class Player(BasePlayer):
     ε = models.FloatField()
     δ = models.FloatField()
     choice = models.BooleanField(
-    choices=[
-        [True, 'A'],
-        [False, 'B'],
-    ], 
-    widget=widgets.RadioSelect
-)
+        choices=[
+            [True, 'A'],
+            [False, 'B'],],
+            widget=widgets.RadioSelect
+        )
+    ε_happend = models.BooleanField(initial=False)
     opp_choice = models.BooleanField()
     played = models.BooleanField(initial=False)
     join_time = models.FloatField(initial=0)
 
     def set_payoff(self):
         self.played = True
-        self.payoff = 0
+        self.payoff += 0
         if self.choice:
             self.payoff += -self.cost
+            self.participant.vars["self_a"] = "A"
+        else:
+            self.participant.vars["self_a"] = "B"
         if self.opp_choice:
             self.payoff += self.benefit
+            self.participant.vars["opp_a"] = "A"
+        else:
+            self.participant.vars["opp_a"] = "B"
 
-
+        self.participant.vars["payoff"] = self.payoff

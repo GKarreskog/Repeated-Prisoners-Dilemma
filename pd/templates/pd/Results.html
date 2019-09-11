@@ -2,13 +2,20 @@
 {% load otree static %}
 
 {% block title %}
-    Results
+    Interaction ended
 {% endblock %}
 
 {% block content %}
-    Your cummulative payoff from this interaction was {{ cumulative_payoff}} from a total number of {{num_prev}} interactions, yielding a total payoff so far from all interactions of {{ tot_payoff }}. 
+
+{% if opp_dropout %}
+<p>The other participant in your group dropped out from the experiment, so the previous interaction got terminated early</p>
+
+{% endif %}
+
+<p>In the previous round, you took action <strong>{{self_a}}</strong> and the other person took action <strong>{{opp_a}}</strong>, which gives you a payoff of <strong>{{payoff}} </strong>.</p>
+
+<p>    Your cummulative payoff from this interaction was <strong>{{ cumulative_payoff}}</strong> from <strong>{{num_prev}}</strong> rounds. </p>
+    <p>In total, you have <strong> {{ tot_payoff }}</strong>. </p>
 
     {% next_button %}
 {% endblock %}
-
-

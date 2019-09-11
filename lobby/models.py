@@ -18,7 +18,11 @@ class Constants(BaseConstants):
 
 
 class Subsession(BaseSubsession):
-    pass
+    def creating_session(self):
+        if self.round_number == 1:
+            for p in self.get_players():
+                p.participant.vars["failed"] = False
+
 
 
 class Group(BaseGroup):
@@ -29,5 +33,5 @@ class Player(BasePlayer):
     q1 = models.IntegerField(choices=[-1,0,1,2,3,4], widget=widgets.RadioSelect)
     q2 = models.IntegerField(choices=[-1,0,1,2,3,4], widget=widgets.RadioSelect)
     q3 = models.StringField(choices=["75%","50%","25%","100%"], widget=widgets.RadioSelect)
-    q4 = models.StringField(choices=["10%", "90%", "80%", "20%"])
+    q4 = models.StringField(choices=["10%", "90%", "80%", "20%"], widget=widgets.RadioSelect)
 

@@ -24,12 +24,16 @@ class Subsession(BaseSubsession):
 
             id = 1
             for p in self.get_players():
+                p.payoff = 50
+                p.participant.vars["is_full"] = False
                 p.participant.vars["time_joined"] = 0
                 p.participant.vars["interaction"] = -1
                 p.participant.vars["tot_wait_time"] = 0
                 p.participant.vars["skip_to_next"] = False
                 p.participant.vars["uid"] = id
                 p.participant.vars["opp_id"] = 0
+                p.participant.vars["timeouts"] = 0
+                p.participant.vars["opp_dropout"] = False
                 id += 1
 
 
