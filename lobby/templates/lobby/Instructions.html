@@ -11,22 +11,24 @@
 
     <p>This experiment is about decision making. You will be randomly matched with other MTurk workes and none of you will know the identity of the other. You begin with {{initial_points}} units, and during the experiment units will be added and subtracted to that amount depending on the choices you and your matched participants make. The conversion rate from units to dollars is {{points_per_dollar}} units per dollar.</p>
 
-    <p>Since this experiment involves multiple participants there will be some waiting involved. You will be compensated for the time spent on waiting pages at an rate of 7$ per hour. Furthermore, you have 30 seconds to make a decision, if you fail to do so before the 30 seconds are up, a random action is taken. If you fail to take an action within 30 seconds a total of three times you will be removed from the experiment and not be compensated. </p>
+    <p>Since this experiment involves multiple participants there will be some waiting involved. You will be compensated for the time spent on waiting pages at an rate of 7$ per hour. </p>
 
     <h4>The Session</h4>
     <p>The session is divided into a series of interations between you and one other participant at the time. </p>
     <p>In each interaction you play a random number of rounds with the same other participant. You will both make one decision per round. Once the interaction ends you will be randomly re-matched with another participant. If you take more than {{wait_to_skip}} seconds to make your decision in a round, a random action will be taken. If this happens 3 times we will consider you inactive and you will be removed from the experiment, and the other participant will be compensated with {{compensation_units}} units.</p>
 
     <h4>The round</h4>
-    <p>In each round of the experiment you will choose between options, A and B. If you choose A, you will lose some points and the participant you are currently interacting with will gain some points. If you choose B you will not lose any points, and the participant you are interacting with will not get any points. You will both face the same choice. The exact values of the cost and the benefit will change between the interactions, but remain the same during each interaction. </p>
+    <p>In each round of the experiment you will choose between two options, A and B. If you choose A, you will lose some points and the participant you are currently interacting with will gain some points. If you choose B you will not lose any points, and the participant you are interacting with will not get any points. You will both face the same choice. The exact values will change between the interactions, but remain the same during each interaction. </p>
 
     <p>For example, if choosing option A will result in you loosing 2 points and the other participant gaining 8 points, four things can happen: </p>
+    <div class="align-left">
     <ul>
         <li>If you play A and the other person plays A, you both get +6 points.</li>
         <li>If you play A and the other person plays B, you would get -2 points and they +8 points.</li>
         <li>If you play B and the other person plays A, you would get +8 points and they -2 points.</li>
         <li>If you play B and the other person plays B, you would both get 0 points.</li>
     </ul>
+</div>
 
     <h4>Random number of rounds</h4>
     <p>You will not now how many rounds a given interaction will last. Instead, for each interaction there is a fixed probability that you play at least on more round. If that probability is e.g. 80%, then there is a 80% probability that you will play at least one more round, and a 20% probability that the current round is the last. This probability will vary between interactions. </p>
@@ -38,6 +40,8 @@
 
 
 <h2>Quiz</h2>
+
+
 <p> Try {{player.round_number}}/{{Constants.num_rounds}} of the quiz.</p>
 
 {% if player.round_number > 1 %}
@@ -56,5 +60,16 @@
     <div class="centered">
         {% next_button %}
     </div>
+<style>
+p {
+    text-align:left;
+}
+
+.align-left {
+    text-align: left;
+}
+
+</style>
+
 
 {% endblock %}

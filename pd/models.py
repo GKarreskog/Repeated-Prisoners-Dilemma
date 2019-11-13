@@ -26,38 +26,31 @@ class Subsession(BaseSubsession):
             # ε_list = [0., 0.05, 0.1]
             ε_list = [0.0, 0.05, 0.1, 0.15]
             c_list = [1,2,3,4]
-            b_list = [4,5,6,7]
-            num_interactions = self.session.config["num_interactions"]
+            b_list = [5,6,7,8]
+            done = False
             deltas = []
             epsilons = []
             costs = []
             benefits = []
             interaction_changes = []
             round_count = 1
-            i = 0
-            while i < num_interactions:
+            interaction_changes.append(round_count)
+            while not done:
                 δ = random.choice(δ_list)
                 ε = random.choice(ε_list)
                 benefit = random.choice(b_list)
                 cost = random.choice(c_list)
 
-                epsilons.append(ε)
-                deltas.append(random.choice(δ_list))
-                interaction_changes.append(round_count)
-                benefits.append(benefit)
-                costs.append(cost)
-                round_count += np.random.geometric(1-δ)
-                i += 1
-                if round_count > Constants.num_rounds:
-                    i = 0
-                    deltas = []
-                    epsilons = []
-                    costs = []
-                    benefits = []
-                    interaction_changes = []
-                    round_count = 1
-            interaction_changes.append(round_count)
 
+                round_count += np.random.geometric(1-δ)
+                if round_count > Constants.num_rounds:
+                    done = True
+                else:
+                    epsilons.append(ε)
+                    deltas.append(random.choice(δ_list))
+                    interaction_changes.append(round_count)
+                    benefits.append(benefit)
+                    costs.append(cost)
 
             self.session.vars["deltas"] = deltas
             self.session.vars["interaction_changes"] = interaction_changes

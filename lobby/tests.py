@@ -7,4 +7,5 @@ from .models import Constants
 class PlayerBot(Bot):
 
     def play_round(self):
-        pass
+        if self.round_number == 1:
+            yield pages.Instructions, {"q1": 3, "q2": 0, "q3":"25%", "q4":"10%"}

@@ -11,11 +11,11 @@
 <p>You have now been matched with a new participant for a new interaction with new parameters. </p>
 {% endif %}
 
-{% if not first %}
+<!-- {% if not first %}
 <p>In the previous round, you took action <strong>{{self_a}}</strong> and the other person took action <strong>{{opp_a}}</strong>, which gave you a payoff of <strong>{{payoff}} </strong>.</p>
-{% endif %}
+{% endif %} -->
 
-<p>You currently have a total of <strong>{{tot_payoff}}</strong></p>
+<!-- <p>You currently have a total of <strong>{{tot_payoff}}</strong></p> -->
 
 <!-- <p>This interaction has the following rules</p> -->
 
@@ -36,16 +36,105 @@
             <td><strong>0</strong></td>
     </tr>
 </table>
-
-    <p><strong>{{δ}}%</strong> probability that you will play at least one more round in this interaction.</p>
-    <p><strong>{{ε}}%</strong> probability that the action implemented will not be the one you choose.</p>
 </ul>
+	<div class="float-left-alone">
+    <p><strong>{{notδ}}%</strong> probability  that the interaction will end after this round (<span class="continue-color"></span>).</p>
+	</div>
+	<div class="float-left-alone">
+  <pie class="continue"></pie>
+  </div>
+  <div class="float-left-alone">
+    <p><strong>{{ε}}%</strong> probability that the action implemented will not be the one you choose (<span class="continue-color"></span>).</p>
+	</div>
+	<div class="float-left-alone">
+        <pie class="noise"></pie>
+		</div>
 
-
+<div class="float-left-alone">
 <p style="text-align: center;">Choose between action <strong>A</strong> and <strong>B</strong></p>
     <div style="text-align: center">
         <button name="choice" value="True" class="btn btn-primary btn-large">A</button>
         <button name="choice" value="False" class="btn btn-primary btn-large">B</button>
     </div>
+	</div>
 
+<style>
+.float-left-alone {
+	text-align: center;
+	display: block;
+}
+
+.float-left-alone p {
+	text-align: center;
+}
+
+pie {
+	display: inline-block;
+	width: 5em;
+	height: 5em;
+	border-radius: 50%;
+	background-color: #141A46;
+	border: 1px solid black;
+	/* float: left; */
+	margin: 1em;
+	margin-top: 0;
+}
+
+.continue-color {
+	height: 0.8em;
+	width: 0.8em;
+	margin-bottom: -0.1em;
+	background-color: #141A46;
+	display: inline-block;
+	border-radius: 4px;
+}
+
+
+.randomization {
+float: left;
+/* width: 50%; */
+height: auto;
+text-align: center;
+}
+
+
+
+.noise {
+	background-image:
+			linear-gradient(91deg, transparent 50%, #EC8B5E 50%),
+			linear-gradient(90deg, #EC8B5E 50%, transparent 50%);
+}
+
+.continue {
+	background-image:
+			linear-gradient(91deg, transparent 50%, #EC8B5E 50%),
+			linear-gradient(90deg, #EC8B5E 50%, transparent 50%);
+}
+</style>
+
+<script>
+	var tot = 0
+	var green = "#EC8B5E"
+	var red = "#141A46"
+
+
+	function increase(i){
+	return 0.15*i^1 + Math.random()*20
+	}
+
+	function update_gradient(obj, prob){
+		console.log($("."+obj).css("background-image"));
+		var gradient = $("."+obj).css("background-image").split("91deg").join(String(90+prob*3.6)+"deg");
+	  console.log(gradient);
+	  $("."+obj).css("background-image", gradient);
+	  console.log(String(prob*3.6));
+	  console.log($("."+obj).css("background-image"));
+	}
+
+	var cont_prob = 100 - {{δ | json}};
+	update_gradient("continue", cont_prob);
+
+	var noise_prob = {{ε |json}};
+	update_gradient("noise", noise_prob);
+</script>
 {% endblock %}

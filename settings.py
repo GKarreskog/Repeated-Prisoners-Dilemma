@@ -28,7 +28,7 @@ mturk_hit_settings = {
     'frame_height': 700,
     'preview_template': 'global/MTurkPreview.html',
     'minutes_allotted_per_assignment': 40,
-    'expiration_hours': 2, 
+    'expiration_hours': 2,
     'qualification_requirements': [
         {
             'QualificationTypeId': "000000000000000000L0",
@@ -48,7 +48,7 @@ mturk_hit_settings = {
 SESSION_CONFIGS = [
     {
        'name': 'full',
-       'display_name': "Repeated interaction",
+       'display_name': "Full experiment",
        'num_demo_participants': 6,
        'app_sequence': ['lobby', 'waiting', 'pd'],
     },
@@ -56,8 +56,16 @@ SESSION_CONFIGS = [
        'name': 'only_games',
        'display_name': "Only Games",
        'num_demo_participants': 6,
-       'min_players_start': 5,
+       'min_players_start': 4,
        'app_sequence': ['waiting', 'pd'],
+    },
+    {
+        'name': 'bots',
+        'display_name': "Bots",
+        'user_browser_bots': True,
+        'num_demo_participants': 4,
+        'min_players_start': 4,
+        'app_sequence': ['lobby', 'waiting', 'pd'],
     }
 ]
 
