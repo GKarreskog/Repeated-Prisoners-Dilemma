@@ -1,0 +1,14 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+   The initial waiting period timed out
+{% endblock %}
+
+{% block content %}
+<p>Not enough players joined, and we don't want to spend any more of your time. You will be paid ${{wait_bonus}} for the time waiting, and an additional ${{timeout_bonus}} for the timeout, making a total bonuspayment of {{tot_bonus}}.</p>
+
+<p> Enter the following code to get your payment <strong>TimeoutBonus1632</strong>
+
+
+{% endblock %}

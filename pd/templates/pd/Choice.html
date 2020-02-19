@@ -2,13 +2,13 @@
 {% load otree static %}
 
 {% block title %}
-    Choice
+    Choice round {{round_in_interaction}} of this interaction
 {% endblock %}
 
 {% block content %}
 
 {% if first %}
-<p>You have now been matched with a new participant for a new interaction with new parameters. </p>
+<p><strong>You have now been matched with a new worker for a new interaction with new parameters.</strong> </p>
 {% endif %}
 
 <!-- {% if not first %}
@@ -19,39 +19,51 @@
 
 <!-- <p>This interaction has the following rules</p> -->
 
-<table class="table table-bordered" style="text-align: center;">
+The two decisions have the following effects in this interaction:
+<ul>
+		<li> <strong>A</strong> Will give you <strong>{{A_val}}</strong> points and the other worker <strong>{{player.benefit}}</strong> points.</li>
+		<li> <strong>B</strong> Will give you <strong>{{base}}</strong> points and the other worker <strong>0</strong> points.</li>
+</ul>
+
+
+<p style="margin-top:2em">The possible outcomes for you after this round are:</p>
+<!-- <table class="table" style="text-align: center;"> -->
+<table style="text-align: center; margin-left:auto; margin-right:auto;">
+	<tr>
+					<th></th>
+					<td></td>
+					<td colspan="2">They choose</td>
+			</tr>
+
         <tr>
                 <th></th>
-                <td><strong>You get</strong> </td>
-                <td><strong>They get</strong></td>
+								<td></td>
+                <td class="bord_bottom"><strong>A</strong> </td>
+                <td class="bord_bottom"><strong>B</strong></td>
             </tr>
     <tr>
-        <th><strong>A</strong></th>
-        <td><strong>-{{player.cost}}</strong> </td>
-        <td><strong>{{player.benefit}}</strong></td>
+				<td rowspan="2" valign="middle" style="vertical-align:middle; text-align:right">You choose</td>
+        <th class="bord_right"><strong>A</strong></th>
+        <td class="bord_bottom bord_right"><strong>{{A_val|add:player.benefit}}</strong> </td>
+        <td class="bord_right bord_bottom"><strong>{{A_val}}</strong></td>
     </tr>
     <tr>
-            <th><strong>B</strong></th>
-            <td><strong>0</strong> </td>
-            <td><strong>0</strong></td>
+            <th class="bord_right"><strong>B</strong></th>
+            <td class="bord_bottom bord_right"><strong>{{base|add:player.benefit}}</strong> </td>
+            <td class="bord_right bord_bottom"><strong>{{base}}</strong></td>
     </tr>
 </table>
-</ul>
+<!-- </ul> -->
 	<div class="float-left-alone">
-    <p><strong>{{notδ}}%</strong> probability  that the interaction will end after this round (<span class="continue-color"></span>).</p>
+    <p>With <strong>{{notδ}}%</strong> probability the interaction will end after this round (<span class="continue-color"></span>).</p>
 	</div>
 	<div class="float-left-alone">
   <pie class="continue"></pie>
   </div>
-  <div class="float-left-alone">
-    <p><strong>{{ε}}%</strong> probability that the action implemented will not be the one you choose (<span class="continue-color"></span>).</p>
-	</div>
-	<div class="float-left-alone">
-        <pie class="noise"></pie>
-		</div>
+
 
 <div class="float-left-alone">
-<p style="text-align: center;">Choose between action <strong>A</strong> and <strong>B</strong></p>
+<p style="text-align: center;">Choose between action <strong>A</strong> and <strong>B</strong>.</p>
     <div style="text-align: center">
         <button name="choice" value="True" class="btn btn-primary btn-large">A</button>
         <button name="choice" value="False" class="btn btn-primary btn-large">B</button>
@@ -66,6 +78,20 @@
 
 .float-left-alone p {
 	text-align: center;
+	margin-top: 4em;
+}
+
+table td, th {
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+}
+
+.bord_right {
+	border-right: 1px black solid;
+}
+
+.bord_bottom {
+	border-bottom: 1px black solid;
 }
 
 pie {
@@ -73,7 +99,7 @@ pie {
 	width: 5em;
 	height: 5em;
 	border-radius: 50%;
-	background-color: #141A46;
+	background-color: #dc3545;
 	border: 1px solid black;
 	/* float: left; */
 	margin: 1em;
@@ -84,7 +110,7 @@ pie {
 	height: 0.8em;
 	width: 0.8em;
 	margin-bottom: -0.1em;
-	background-color: #141A46;
+	background-color: #dc3545;
 	display: inline-block;
 	border-radius: 4px;
 }
@@ -97,18 +123,20 @@ height: auto;
 text-align: center;
 }
 
-
-
-.noise {
-	background-image:
-			linear-gradient(91deg, transparent 50%, #EC8B5E 50%),
-			linear-gradient(90deg, #EC8B5E 50%, transparent 50%);
+li {
+	list-style-position: inside;
 }
+
+/* .noise {
+	background-image:
+			linear-gradient(91deg, transparent 50%, #56E39F 50%),
+			linear-gradient(90deg, #56E39F 50%, transparent 50%);
+} */
 
 .continue {
 	background-image:
-			linear-gradient(91deg, transparent 50%, #EC8B5E 50%),
-			linear-gradient(90deg, #EC8B5E 50%, transparent 50%);
+			linear-gradient(91deg, transparent 50%, #1D5 50%),
+			linear-gradient(90deg, #1D5 50%, transparent 50%);
 }
 </style>
 
@@ -134,7 +162,7 @@ text-align: center;
 	var cont_prob = 100 - {{δ | json}};
 	update_gradient("continue", cont_prob);
 
-	var noise_prob = {{ε |json}};
-	update_gradient("noise", noise_prob);
+	// var noise_prob = {{ε |json}};
+	// update_gradient("noise", noise_prob);
 </script>
 {% endblock %}

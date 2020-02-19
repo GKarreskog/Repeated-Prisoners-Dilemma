@@ -7,7 +7,5 @@
 
 {% block content %}
 
-<p>You failed to responds within 30 seconds more than 3 times and have thus been removed from the experiment.</p>
+<p>You failed to responds within {{session.config.timeout}} seconds more than 3 times and have thus been removed from the experiment.</p>
 {% endblock %}
-
-

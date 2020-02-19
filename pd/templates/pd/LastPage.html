@@ -2,14 +2,17 @@
 {% load otree static %}
 
 {% block title %}
-    Results
+    Final Results
 {% endblock %}
 
 {% block content %}
 
-<p>The you for participating, the experiment is now over. You earned a total of <strong>{{tot_payoff}}</strong> which corresponds to <strong> {{ play_bonus }}</strong> from the interactions. Additionaly, you earned  <strong>${{wait_bonus}}</strong> from the time spent on waiting pages, which yield a total bonus payment of <strong>{{tot_bonus}}</strong>  </p>
+<p>Thank you for participating! </p>
 
-    {% next_button %}
+<p>
+    The experiment is now over. You earned a total of <strong>{{tot_payoff}}</strong> which corresponds to <strong> {{ play_bonus }}</strong> from the interactions. Additionaly, you earned  <strong>${{wait_bonus}}</strong> from the time spent on waiting pages, which yields a total bonus payment of <strong>{{tot_bonus}}</strong>.
+</p>
+
+<p> Enter the following code to get your payment <strong>FinalPage{{tot_bonus}}</strong>
+    <!-- {% next_button %} -->
 {% endblock %}
-
-

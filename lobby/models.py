@@ -30,8 +30,23 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    q1 = models.IntegerField(choices=[-1,0,1,2,3,4], widget=widgets.RadioSelect)
-    q2 = models.IntegerField(choices=[-1,0,1,2,3,4], widget=widgets.RadioSelect)
-    q3 = models.StringField(choices=["75%","50%","25%","100%"], widget=widgets.RadioSelect)
-    q4 = models.StringField(choices=["10%", "90%", "80%", "20%"], widget=widgets.RadioSelect)
 
+    # q1 = models.IntegerField(choices=[sum - 3,sum-2,sum-1,sum,sum+1], widget=widgets.RadioSelect)
+    # q2 = models.IntegerField(choices=[base-3,base-2,base,base+1,base+base,base+4], widget=widgets.RadioSelect)
+    q1 = models.IntegerField(widget=widgets.RadioSelect)
+    q2 = models.IntegerField(widget=widgets.RadioSelect)
+    # q2 = models.IntegerField(choices=[base-1,base,base+1,base+2,base+3,base+base], widget=widgets.RadioSelect)
+    q3 = models.StringField(choices=["90%","80%","30%","20%"], widget=widgets.RadioSelect)
+    # q4 = models.StringField(choices=["50%", "75%", "25%", "30%"], widget=widgets.RadioSelect)
+
+
+    def q1_choices(self):
+        base = self.session.config["base_points"]
+        A_val = base - 1
+        A_other = 4
+        sum = A_val + A_other
+        return [sum - 3,sum-2,sum-1,sum,sum+1]
+
+    def q2_choices(self):
+        base = self.session.config["base_points"]
+        return [base-3,base-2,base,base+1,base+base,base+4]
