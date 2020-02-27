@@ -14,6 +14,6 @@ class PlayerBot(Bot):
             A_val = base - 1
             A_other = 4
             sum = A_val + A_other
-            time.sleep(10 + 120*np.random.rand())
+            time.sleep(10 + 10*np.random.rand())
             # yield pages.Instructions, {"q1": sum, "q2":base, "q3":"20%", "q4":"25%"}
-            yield pages.Instructions, {"q1": sum, "q2":base, "q3":"20%"}
+            yield pages.Instructions, {"q1": sum, "q2":base, "q3":"25%"}

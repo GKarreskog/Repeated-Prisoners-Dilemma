@@ -12,9 +12,45 @@
 {% if opp_dropout %}
 <p>The other participant in your group dropped out from the experiment, so the interaction is terminated early and you are compensated with {{comp_units}} points.</p>
 {% endif %}
+
+<div class="result_text">
+
+<!-- <p>You took action <strong>{{self_a}}</strong> and the other worker took action <strong>{{opp_a}}</strong>, which gives you a payoff of <strong>{{payoff}} </strong>.</p> -->
+<table style="text-align: center; margin-left:auto; margin-right:auto;">
+	<tr>
+					<th></th>
+					<td></td>
+					<td colspan="2">Their action</td>
+			</tr>
+
+        <tr>
+                <th></th>
+								<td></td>
+                <td class="bord_bottom action" id="col_A">A </td>
+                <td class="bord_bottom action" id="col_B">B</td>
+            </tr>
+    <tr>
+				<td rowspan="2" valign="middle" style="vertical-align:middle; text-align:right">Your action</td>
+        <td class="bord_right action" id="row_A">A</td>
+        <td class="bord_bottom bord_right" id="AA">{{A_val|add:player.benefit}} </td>
+        <td class="bord_right bord_bottom" id="AB">{{A_val}}</td>
+    </tr>
+    <tr>
+            <td class="bord_right action" id="row_B">B</td>
+            <td class="bord_bottom bord_right" id="BA">{{base|add:player.benefit}} </td>
+            <td class="bord_right bord_bottom" id="BB">{{base}}</td>
+    </tr>
+</table>
+
+<p> The other worker took action <strong>{{opp_a}}</strong> and you took action <strong>{{self_a}}</strong>, which gives you a payoff of <strong>{{payoff}} </strong>.</p>
+<!-- <p>    Your cumulative payoff from this interaction is <strong>{{ cumulative_payoff}}</strong> from <strong>{{num_prev}}</strong> rounds. </p> -->
+    <p>In total, you have <strong> {{ tot_payoff }}</strong>. </p>
+
+</div>
+
 <div class="randomization">
 <div class="wheel">
-<h3>End interaction?</h3>
+<h4>End interaction?</h4>
   <div class="arrow"></div>
   <pie class="continue"></pie>
 </div>
@@ -35,39 +71,6 @@
 </div>
 
 
-<div class="result">
-
-<p>You took action <strong>{{self_a}}</strong> and the other worker took action <strong>{{opp_a}}</strong>, which gives you a payoff of <strong>{{payoff}} </strong>.</p>
-<table style="text-align: center; margin-left:auto; margin-right:auto;">
-	<tr>
-					<th></th>
-					<td></td>
-					<td colspan="2">Their action</td>
-			</tr>
-
-        <tr>
-                <th></th>
-								<td></td>
-                <td class="bord_bottom"><strong>A</strong> </td>
-                <td class="bord_bottom"><strong>B</strong></td>
-            </tr>
-    <tr>
-				<td rowspan="2" valign="middle" style="vertical-align:middle; text-align:right">Your action</td>
-        <th class="bord_right" ><strong>A</strong></th>
-        <td class="bord_bottom bord_right" id="AA"><strong>{{A_val|add:player.benefit}}</strong> </td>
-        <td class="bord_right bord_bottom" id="AB"><strong>{{A_val}}</strong></td>
-    </tr>
-    <tr>
-            <th class="bord_right"><strong>B</strong></th>
-            <td class="bord_bottom bord_right" id="BA"><strong>{{base|add:player.benefit}}</strong> </td>
-            <td class="bord_right bord_bottom" id="BB"><strong>{{base}}</strong></td>
-    </tr>
-</table>
-
-<p>    Your cumulative payoff from this interaction is <strong>{{ cumulative_payoff}}</strong> from <strong>{{num_prev}}</strong> rounds. </p>
-    <p>In total, you have <strong> {{ tot_payoff }}</strong>. </p>
-
-</div>
 
 {% next_button %}
 <style>
@@ -134,6 +137,14 @@ color: white;
 padding: 1em;
 }
 
+.result_text {
+margin-bottom: 2em;
+}
+
+.action {
+	font-weight: normal;
+}
+
 .wheel {
 display: inline-block;
 }
@@ -166,6 +177,16 @@ var red = "#dc3545"
 var id_nam =  "#" + {{id_choosen | json}};
 console.log(id_nam);
 
+var row_choice = "#row_" + {{self_a | json}}
+var col_choice = "#col_" + {{opp_a | json}}
+
+$(".bord_right").css("border-color", "black");
+$(".bord_bottom").css("border-color", "black");
+$(id_nam).css("background-color", "#aaa");
+$(id_nam).css("font-weight", "bold");
+$(row_choice).css("font-weight", "bold");
+$(col_choice).css("font-weight", "bold");
+
 
 function increase(i){
 return 0.15*i^1 + Math.random()*20
@@ -184,7 +205,7 @@ var cont_prob = 100 - {{δ | json}};
 var cont_end_grad = String(90+cont_prob*3.6)+"deg"
 update_gradient("continue", cont_prob);
 var cont = {{last_round | json}};
-var cont_start = (360 - 150*10) % 360;
+var cont_start = (360 - 200*10) % 360;
 var cont_rand = Math.random();
 
 if (cont){
@@ -198,11 +219,13 @@ cont_start = cont_start % 360
 
 tot_cont = 0
 tot_noise = 0
-for (i = 1; i <= 150; i++){
+for (i = 1; i <= 200; i++){
   tot_cont += increase(i);
   tot_noise += increase(i);
 delayRotation(i, tot_cont, cont_start, "continue", cont, cont_end_grad);
 }
+
+
 
 function delayRotation(i,tot, start, obj, success, end_grad) {
 	setTimeout(function(){
@@ -213,7 +236,7 @@ function delayRotation(i,tot, start, obj, success, end_grad) {
           "-o-transform": "rotate(" + rotation + "deg)",
           "-ms-transform": "rotate(" + rotation + "deg)"
       });
-    if (i == 150){
+    if (i == 200){
     setTimeout(function(){
     if(success){
       	// var gradient = $("."+obj).css("background-image").split(green).join("white");
@@ -224,9 +247,6 @@ function delayRotation(i,tot, start, obj, success, end_grad) {
     }
     $(".result").css("color", "black");
 		$(".otree-btn-next").css("display", "inline-block");
-		$(".bord_right").css("border-color", "black");
-		$(".bord_bottom").css("border-color", "black");
-		$(id_nam).css("background-color", "#aaa");
 	}, 500)}
   }, tot);
 }

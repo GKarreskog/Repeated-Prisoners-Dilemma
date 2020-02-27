@@ -24,43 +24,57 @@ class Subsession(BaseSubsession):
         if self.round_number == 1:
             # treatments = []
             # δ_list = [0.5, 0.6, 0.7, 0.8]
-            δ_list = [1/2, 2/3, 3/4, 4/5, 5/6]
-            δ_list = [round(δ,2) for δ in δ_list]
+            # δ_list = [1/2, 2/3, 3/4, 4/5, 5/6]
+            # δ_list = [3/4]
+            # δ_list = [round(δ,2) for δ in δ_list]
+            δ = 0.75
             # ε_list = [0., 0.05, 0.1]
             # ε_list = [0.0, 0.05, 0.1, 0.15]
             # l = g = c/(b - c)
             # this results in possible l ∈
             # gives
-            c_list = [0,1,2,3,4]
-            bc_list = [0,1,2,3,4,5,6]
+            # c_list = [0,1,2,3,4]
+            c_list = [2]
+            c = 2
+            bc_list = [1,4,6]
+
+
+
+            if self.session.config["treatment"] == 1:
+                bc_list = [1,1,1,1,3,3,3,3,6,6,6,6]
+            elif self.session.config["treatment"] == 2:
+                bc_list = [6,6,6,6,3,3,3,3,1,1,1,1]
+            elif self.session.config["treatment"] == 3:
+                bc_list = [3,6,1,6,1,6,1,3,1,3,6,3]
+            else:
+                bc_list = [3,6,1,6,1,6,1,3,1,3,6,3]
+
+
             done = False
-            deltas = []
-            epsilons = []
-            costs = []
-            benefits = []
-            bases = []
-            interaction_changes = []
-            round_count = 1
-            interaction_changes.append(round_count)
             while not done:
-                δ = random.choice(δ_list)
-                # ε = random.choice(ε_list)
-                cost = random.choice(c_list)
-                bc = random.choice(bc_list)
-                benefit = cost + bc
-                base = self.session.config["base_points"]
-
-
-                round_count += np.random.geometric(1-δ)
-                if round_count >= Constants.num_rounds:
-                    done = True
-                else:
-                    # epsilons.append(ε)
+                deltas = []
+                epsilons = []
+                costs = []
+                benefits = []
+                bases = []
+                interaction_changes = []
+                round_count = 1
+                interaction_changes.append(round_count)
+                for i in range(len(bc_list)):
+                    cost = c
+                    bc = bc_list[i]
+                    benefit = cost + bc
+                    base = self.session.config["base_points"]
+                    round_count += np.random.geometric(1-δ)
                     deltas.append(δ)
                     interaction_changes.append(round_count)
                     benefits.append(benefit)
                     costs.append(cost)
                     bases.append(base)
+                # ε = random.choice(ε_list)
+                if round_count < Constants.num_rounds:
+                    done = True
+
 
             self.session.vars["deltas"] = deltas
             self.session.vars["interaction_changes"] = interaction_changes
@@ -95,6 +109,7 @@ class Player(BasePlayer):
     cost = models.FloatField()
     δ = models.FloatField()
     base = models.FloatField()
+    treatment = models.IntegerField()
     interaction = models.IntegerField()
     timeout = models.BooleanField()
     opp_timeout = models.BooleanField()

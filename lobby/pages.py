@@ -38,7 +38,7 @@ class Instructions(MyPage):
         super().before_next_page()
         base = self.session.config["base_points"]
         # if (self.player.q1 == base + 3) and (self.player.q2 == base) and (self.player.q3 == "20%") and (self.player.q4 == "25%"):
-        if (self.player.q1 == base + 3) and (self.player.q2 == base) and (self.player.q3 == "20%"):
+        if (self.player.q1 == base + 3) and (self.player.q2 == base) and (self.player.q3 == "25%"):
             self.player.participant.vars['done'] = True
         else:
             self.player.participant.vars['done'] = False

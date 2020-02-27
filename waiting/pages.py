@@ -26,6 +26,7 @@ class InitialWaitPage(WaitPage):
                 self.session.vars["n_active"] += len(waiting_players)
             else:
                 for player in waiting_players:
+                    print("It is full!")
                     player.participant.vars["is_full"] = True
             return waiting_players
         elif ready:

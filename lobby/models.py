@@ -36,7 +36,7 @@ class Player(BasePlayer):
     q1 = models.IntegerField(widget=widgets.RadioSelect)
     q2 = models.IntegerField(widget=widgets.RadioSelect)
     # q2 = models.IntegerField(choices=[base-1,base,base+1,base+2,base+3,base+base], widget=widgets.RadioSelect)
-    q3 = models.StringField(choices=["90%","80%","30%","20%"], widget=widgets.RadioSelect)
+    q3 = models.StringField(choices=["80%","75%","25%","20%"], widget=widgets.RadioSelect)
     # q4 = models.StringField(choices=["50%", "75%", "25%", "30%"], widget=widgets.RadioSelect)
 
 
@@ -49,4 +49,4 @@ class Player(BasePlayer):
 
     def q2_choices(self):
         base = self.session.config["base_points"]
-        return [base-3,base-2,base,base+1,base+base,base+4]
+        return [base-3,base-2,base,base+1,base+2,base+4]

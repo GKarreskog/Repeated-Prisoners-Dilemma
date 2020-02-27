@@ -14,12 +14,17 @@ class Choice(Page):
         return self.session.config["timeout"]
 
     def is_displayed(self):
+        # if self.session.vars["experiment_done"] == False:
+        if self.round_number == 10:
+            self.session.vars["experiment_done"] = True
+            print("experiment_done", self.session.vars["experiment_done"])
         i = self.player.participant.vars["interaction"]
         # self.player.ε = self.session.vars["epsilons"][i]
         self.player.δ = self.session.vars["deltas"][i]
         self.player.benefit = self.session.vars["benefits"][i]
         self.player.cost = self.session.vars["costs"][i]
         self.player.base = self.session.vars["bases"][i]
+        self.player.treatment = self.session.config["treatment"]
         if self.player.participant.vars["is_full"]:
             return False
         elif self.player.participant.vars["timeouts"] >= 3:
@@ -217,8 +222,6 @@ class GroupWaitPage(WaitPage):
                 p.participant.vars["time_joined"] = time.time()
 
         players_to_return = []
-        if period > 80:
-            self.session.vars["experiment_done"] = True
         if len(players) >= 2:
             random.shuffle(players)
             p1 = players[0]
@@ -236,7 +239,8 @@ class GroupWaitPage(WaitPage):
                     p.participant.vars["time_joined"] = 0
                     p.participant.vars["skip_to_next"] = False
                     p.participant.vars["interaction"] += 1
-                    self.session.vars["n_passed"][self.round_number] += 1
+                    # self.session.vars["n_passed"][self.round_number] += 1
+                self.session.vars["n_passed"][self.round_number] += len(players)
             elif p2 == False and (len(players) + self.session.vars["n_passed"][self.round_number]  == self.session.vars["n_active"]):
                 for p in players:
                     p.wait_time = time.time() - p.participant.vars["time_joined"]
@@ -245,7 +249,7 @@ class GroupWaitPage(WaitPage):
                     p.participant.vars["skip_to_next"] = True
                     p.participant.vars["interaction"] += 1
                     print(p.participant.vars["skip_to_next"])
-                    self.session.vars["n_passed"][self.round_number] += len(players)
+                self.session.vars["n_passed"][self.round_number] += len(players)
                 players_to_return = players
                 print("Skipping next interaction")
             #     if (time.time() - p1.participant.vars["time_joined"]) > self.session.config["wait_to_skip"]:
@@ -253,7 +257,7 @@ class GroupWaitPage(WaitPage):
             else:
                 print("Only two, max wait time", max([time.time() - p.participant.vars["time_joined"] for p in players]))
         if self.session.vars["someone_has_passed"][self.round_number] and len(players_to_return) == 0:
-            if (time.time() - players[0].participant.vars["time_joined"]) > self.session.config["wait_to_skip"] or 1 + self.session.vars["n_passed"][self.round_number] == self.session.vars["n_active"]:
+            if (time.time() - players[0].participant.vars["time_joined"]) > self.session.config["wait_to_skip"] or 1 + self.session.vars["n_passed"][self.round_number] >= self.session.vars["n_active"]:
                 p = players[0]
                 p.wait_time = time.time() - p.participant.vars["time_joined"]
                 p.participant.vars["tot_wait_time"] += time.time() - p.participant.vars["time_joined"]
@@ -262,13 +266,6 @@ class GroupWaitPage(WaitPage):
                 p.participant.vars["interaction"] += 1
                 players_to_return = [p]
                 self.session.vars["n_passed"][self.round_number] += len(players_to_return)
-                print("Skipping next interaction")
-                print(p.participant.vars["skip_to_next"])
-            else:
-                print("Only one, not time to skip")
-                print(time.time() - players[0].participant.vars["time_joined"])
-                print(max([time.time() - p.participant.vars["time_joined"] for p in players]))
-                print(self.session.vars["someone_has_passed"])
 
         if self.session.vars["n_active"] == 1:
             p = players[0]
